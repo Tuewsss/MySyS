@@ -28,6 +28,24 @@ Baixe o `DSS-Setup-<versão>.exe` na página de *Releases* e execute.
 
 O instalador não tem assinatura digital, então na primeira vez o Windows SmartScreen mostra "O Windows protegeu o computador". Clique em **Mais informações → Executar assim mesmo**.
 
+### Verificar o download (opcional)
+
+O instalador é gerado pelo GitHub Actions a partir do código deste repositório, não no PC do autor. Antes de executar, você pode conferir que ele não foi alterado:
+
+**1. Hash SHA-256.** Compare o resultado com a linha do `SHA256SUMS.txt` da mesma Release:
+
+```powershell
+Get-FileHash .\DSS-Setup-0.1.0.exe -Algorithm SHA256
+```
+
+**2. Origem do arquivo** (precisa do [GitHub CLI](https://cli.github.com/)). Confirma que o `.exe` foi gerado pelo workflow deste repositório:
+
+```powershell
+gh attestation verify .\DSS-Setup-0.1.0.exe --repo Tuewsss/MySyS
+```
+
+Se aparecer `Verification succeeded`, o arquivo é autêntico.
+
 ## Desenvolvimento
 
 Requisitos: **Windows 10 ou 11** e **Node.js 22** ou mais novo.

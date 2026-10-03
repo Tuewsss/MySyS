@@ -1,0 +1,61 @@
+# Gera o instalador e publica a Release quando uma tag v* é enviada (ex.: v0.1.0).
+# O .exe sai com SHA256SUMS.txt e uma attestation que prova que foi gerado aqui.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write      # criar a Release
+  id-token: write      # attestation
+  attestations: write  # attestation
+
+jobs:
+  release:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Conferir se a tag bate com a versão do package.json
+        run: |
+          $versao = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          if ("v$versao" -ne "${{ github.ref_name }}") {
+            Write-Error "Tag ${{ github.ref_name }} não bate com a versão $versao do package.json"
+            exit 1
+          }
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+      - name: Gerar instalador
+        run: npm run dist -- --publish never
+
+      - name: Gerar SHA256SUMS.txt
+        working-directory: release
+        run: |
+          Get-ChildItem DSS-Setup-*.exe | ForEach-Object {
+            "$((Get-FileHash $_ -Algorithm SHA256).Hash.ToLower())  $($_.Name)"
+          } | Out-File SHA256SUMS.txt -Encoding ascii
+          Get-Content SHA256SUMS.txt
+
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: release/DSS-Setup-*.exe
+
+      - name: Publicar Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $exe = (Get-ChildItem release/DSS-Setup-*.exe).FullName
+          gh release create "${{ github.ref_name }}" $exe release/SHA256SUMS.txt `
+            --title "DSS ${{ github.ref_name }}" --generate-notes
