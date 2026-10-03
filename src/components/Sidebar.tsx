@@ -38,7 +38,7 @@ export default function Sidebar() {
     <aside className="flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0f1520]">
       <div className="flex items-center gap-2 px-5 py-5">
         <HardDrive className="h-6 w-6 text-sky-500" />
-        <span className="text-lg font-semibold">DSS</span>
+        <span className="text-lg font-semibold">MySyS</span>
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 px-3">

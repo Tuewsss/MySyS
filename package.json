@@ -1,6 +1,6 @@
 {
-  "name": "dss",
-  "productName": "DSS",
+  "name": "mysys",
+  "productName": "MySyS",
   "version": "0.1.0",
   "description": "Analisa o SSD e ajuda a limpar com segurança",
   "author": "Mateus Monteiro Mendes",
@@ -15,6 +15,8 @@
     "test": "vitest run",
     "clean": "node -e \"for (const d of ['dist', 'dist-electron']) require('fs').rmSync(d, { recursive: true, force: true })\"",
     "dist": "npm run clean && npm run build && electron-builder --win nsis",
+    "dist:store": "npm run clean && npm run build && electron-builder --win appx --publish never",
+    "store:teste": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/testar-appx.ps1",
     "icon": "python scripts/gerar-icone.py"
   },
   "devDependencies": {
@@ -40,7 +42,10 @@
   "build": {
     "appId": "com.mateusmendes.dss",
     "electronDist": "node_modules/electron/dist",
-    "productName": "DSS",
+    "toolsets": {
+      "winCodeSign": "1.1.0"
+    },
+    "productName": "MySyS",
     "directories": {
       "output": "release",
       "buildResources": "build"
@@ -70,11 +75,24 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "DSS",
+      "shortcutName": "MySyS",
       "deleteAppDataOnUninstall": false,
       "installerIcon": "build/icon.ico",
       "uninstallerIcon": "build/icon.ico",
-      "artifactName": "DSS-Setup-${version}.${ext}"
+      "artifactName": "MySyS-Setup-${version}.${ext}"
+    },
+    "appx": {
+      "customManifestPath": "appxmanifest.xml",
+      "identityName": "MateusMonteiroMendes.MySyS",
+      "applicationId": "MySyS",
+      "publisher": "CN=73244824-D28B-4A96-9E72-B77432247A25",
+      "publisherDisplayName": "Mateus Monteiro Mendes",
+      "displayName": "MySyS",
+      "languages": ["pt-BR"],
+      "backgroundColor": "#0b0f17",
+      "minVersion": "10.0.19041.0",
+      "maxVersionTested": "10.0.26100.0",
+      "artifactName": "MySyS-${version}.${ext}"
     }
   }
 }

@@ -115,7 +115,7 @@ export default function ScanPanel() {
           </ul>
           {summary.needsAdmin && (
             <p className="mt-2 text-xs text-slate-500">
-              O DSS roda sem administrador por segurança e não pede elevação sozinho. Essas pastas costumam ser do
+              O MySyS roda sem administrador por segurança e não pede elevação sozinho. Essas pastas costumam ser do
               sistema e não precisam de limpeza.
             </p>
           )}

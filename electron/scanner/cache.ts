@@ -1,4 +1,4 @@
-// Cache da última análise: %APPDATA%\DSS\ultima-analise.json.gz
+// Cache da última análise: %APPDATA%\MySyS\ultima-analise.json.gz
 // Permite abrir o app já com os resultados, sem analisar o disco de novo.
 //
 // A árvore do C: tem ~210 mil pastas. Em JSON comum, cada pasta repetiria os

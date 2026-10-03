@@ -32,7 +32,7 @@ export const JUNK_INFO: Record<JunkCategoryId, { title: string; description: str
   },
   windowsOld: {
     title: 'Instalação anterior do Windows (Windows.old)',
-    description: 'O DSS não remove esta pasta. Use a Limpeza de Disco do Windows.',
+    description: 'O MySyS não remove esta pasta. Use a Limpeza de Disco do Windows.',
     infoOnly: true,
   },
 }

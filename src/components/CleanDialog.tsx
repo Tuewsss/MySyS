@@ -44,7 +44,7 @@ const ACTION_INFO: Record<CleanAction, { label: string; description: string; ico
   quarentena: {
     label: 'Enviar para a quarentena',
     description:
-      'Move para uma pasta isolada do DSS e o arquivo não pode ser aberto por engano. Dá para desfazer pelo Histórico.',
+      'Move para uma pasta isolada do MySyS e o arquivo não pode ser aberto por engano. Dá para desfazer pelo Histórico.',
     icon: Archive,
   },
   apagar: {
@@ -57,7 +57,7 @@ const ACTION_INFO: Record<CleanAction, { label: string; description: string; ico
 const CONFIRM_WORD = 'APAGAR'
 
 /**
- * Tela de confirmação de TODA limpeza do DSS.
+ * Tela de confirmação de TODA limpeza do MySyS.
  * Passos: escolher a ação (ou simular) → [digitar APAGAR] → andamento → resultado.
  */
 export default function CleanDialog({
@@ -131,7 +131,7 @@ export default function CleanDialog({
               <History className="h-5 w-5 shrink-0" />
               <div>
                 <strong>Estes resultados são da análise salva de {formatDateTime(cachedAt)}.</strong> Desde então, os
-                arquivos podem ter mudado, sumido ou sido trocados. Por segurança, o DSS só limpa a partir de uma
+                arquivos podem ter mudado, sumido ou sido trocados. Por segurança, o MySyS só limpa a partir de uma
                 análise feita agora.
               </div>
             </div>

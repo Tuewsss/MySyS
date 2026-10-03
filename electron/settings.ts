@@ -1,4 +1,4 @@
-// Configurações do usuário, salvas em %APPDATA%\DSS\configuracoes.json.
+// Configurações do usuário, salvas em %APPDATA%\MySyS\configuracoes.json.
 // O arquivo pode ter sido editado à mão ou estar corrompido, então tudo que
 // vem dele (ou da interface) passa por sanitizeSettings() antes de ser usado.
 import fs from 'node:fs/promises'

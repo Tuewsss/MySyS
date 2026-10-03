@@ -26,7 +26,7 @@ export default function Suspeitos() {
 
   const header = (
     <>
-      <PageHeader title="Suspeitos" subtitle="Arquivos com características de risco. O DSS não é um antivírus." />
+      <PageHeader title="Suspeitos" subtitle="Arquivos com características de risco. O MySyS não é um antivírus." />
       <div className="mb-6 flex items-start gap-3 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
         <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
         <div>
@@ -61,7 +61,7 @@ export default function Suspeitos() {
             <ScanSearch className="mt-1 h-6 w-6 shrink-0 text-sky-500" />
             <div className="flex-1 text-sm text-slate-600 dark:text-slate-300">
               <p>
-                O DSS confere executáveis e scripts em lugares de risco (Temp, AppData\Roaming, Downloads), nomes
+                O MySyS confere executáveis e scripts em lugares de risco (Temp, AppData\Roaming, Downloads), nomes
                 enganosos como <code>foto.jpg.exe</code>, assinatura digital, arquivos ocultos e o que roda sozinho
                 quando o Windows inicia. Nada é alterado.
               </p>
@@ -151,7 +151,7 @@ export default function Suspeitos() {
                 <Rocket className="h-4 w-4 text-sky-500" /> Inicialização automática ({formatNumber(result.autostart.length)})
               </span>
             }
-            subtitle="Programas que rodam sozinhos quando o Windows liga. O DSS só lista: para desativar, use o Gerenciador de Tarefas → Aplicativos de inicialização."
+            subtitle="Programas que rodam sozinhos quando o Windows liga. O MySyS só lista: para desativar, use o Gerenciador de Tarefas → Aplicativos de inicialização."
           >
             {result.autostart.length === 0 ? (
               <p className="text-sm text-slate-500">Nenhum programa encontrado.</p>

@@ -3,7 +3,7 @@ import type { Theme } from '../../electron/scanner/types'
 // O tema de verdade fica nas configurações (no main). Uma cópia vai para o
 // localStorage só para o app já abrir com o tema certo, sem "piscar" escuro
 // enquanto as configurações chegam do main.
-const KEY = 'dss-theme'
+const KEY = 'mysys-theme'
 
 export function applyTheme(theme: Theme) {
   document.documentElement.classList.toggle('dark', theme === 'dark')

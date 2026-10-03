@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-// Caminhos que o DSS NUNCA pode remover. Esta verificação é a última linha
+// Caminhos que o MySyS NUNCA pode remover. Esta verificação é a última linha
 // de defesa: mesmo que alguma tela tenha um bug, a limpeza consulta isto antes.
 // Na dúvida, um caminho é considerado protegido.
 

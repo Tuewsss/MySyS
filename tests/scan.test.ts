@@ -21,7 +21,7 @@ function file(rel: string, size: number, daysAgo = 0) {
 
 beforeAll(async () => {
   // Não usamos a pasta temporária do sistema: ela fica dentro de AppData,
-  // e o DSS trata AppData de forma especial (o que mudaria o resultado).
+  // e o MySyS trata AppData de forma especial (o que mudaria o resultado).
   tmp = fs.mkdtempSync(path.join(__dirname, 'tmp-scan-'))
   const user = 'Users\\ana'
   const local = `${user}\\AppData\\Local`

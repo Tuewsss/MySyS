@@ -79,7 +79,7 @@ export default function Duplicados() {
                 <>
                   <p>
                     A análise encontrou <strong>{formatNumber(info.files)} arquivos</strong> com tamanhos repetidos (
-                    {formatBytes(info.bytes)}). Para saber se são iguais de verdade, o DSS compara o conteúdo em duas
+                    {formatBytes(info.bytes)}). Para saber se são iguais de verdade, o MySyS compara o conteúdo em duas
                     etapas: primeiro o começo de cada arquivo (rápido) e depois, só dos parecidos, o arquivo inteiro
                     (SHA-256).
                   </p>

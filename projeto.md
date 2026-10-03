@@ -1,4 +1,4 @@
-# DSS — Especificação do Projeto
+# MySyS — Especificação do Projeto
 
 > Documento inicial para o Claude Code. Leia tudo antes de criar qualquer arquivo.
 > Trabalhe em **fases** (seção 9). Ao fim de cada fase, pare, mostre o que foi feito e espere minha aprovação.
@@ -46,11 +46,11 @@ Estrutura real (pasta `C:\Dev\DSS`). Itens marcados com ⏳ ainda não existem.
 DSS/
 ├── electron/
 │   ├── main.ts            # janela (contextIsolation, sem nodeIntegration, sandbox, sem navegar para fora)
-│   ├── paths.ts           # caminhos dos dados (%APPDATA%\DSS)
+│   ├── paths.ts           # caminhos dos dados (%APPDATA%\MySyS)
 │   ├── write-file-safe.ts # grava arquivos sem corromper (temporário + renomear)
 │   ├── preload.ts         # API exposta ao React (window.api)
 │   ├── ipc.ts             # todos os canais IPC; guarda o último resultado da análise
-│   ├── settings.ts        # configurações (%APPDATA%\DSS\configuracoes.json), sempre validadas
+│   ├── settings.ts        # configurações (%APPDATA%\MySyS\configuracoes.json), sempre validadas
 │   ├── settings-defaults.ts # padrões e limites (sem Node: o React também usa)
 │   ├── drives.ts          # lista de unidades (PowerShell Win32_LogicalDisk)
 │   ├── winfiles.ts        # PowerShell somente leitura: assinatura, oculto, inicialização
@@ -145,7 +145,7 @@ A UI deve deixar claro: *"Suspeito não significa vírus. Na dúvida, envie para
 - Seleção por checkbox, com o **total a liberar** sempre visível.
 - Ações:
   - **Mover para a Lixeira** (padrão) — usar `shell.trashItem` do Electron.
-  - **Quarentena** — mover para `%APPDATA%\DSS\quarentena` guardando o caminho original (para suspeitos).
+  - **Quarentena** — mover para `%APPDATA%\MySyS\quarentena` guardando o caminho original (para suspeitos).
   - **Apagar permanentemente** — só com confirmação dupla digitando `APAGAR`.
 - **Modo simulação** (dry-run): mostra o que seria feito sem tocar em nada.
 - **Histórico** com data, arquivos, tamanho e botão **Desfazer** (restaurar da quarentena).
@@ -244,7 +244,7 @@ Próximo passo: as **Melhorias futuras** (fim desta seção), começando pela le
 | `npm test` | roda os testes (Vitest) |
 | `npm run build` | checa os tipos e gera `dist/` e `dist-electron/` |
 | `npm run typecheck` | só a checagem de tipos |
-| `npm run dist` | limpa, compila e gera o instalador `release\DSS-Setup-<versão>.exe` |
+| `npm run dist` | limpa, compila e gera o instalador `release\MySyS-Setup-<versão>.exe` |
 | `npm run icon` | redesenha o ícone em `build/` (precisa de Python com Pillow) |
 
 ### O que cada página já faz
@@ -261,7 +261,7 @@ Próximo passo: as **Melhorias futuras** (fim desta seção), começando pela le
 ### Como a limpeza funciona (Fase 7)
 - **Tela de confirmação única** (`src/components/CleanDialog.tsx`) para todas as páginas: escolher a ação → [digitar `APAGAR`] → andamento com Cancelar → resultado.
 - Ações: **Lixeira** (padrão, `shell.trashItem`), **Quarentena** (só arquivos), **Apagar permanentemente** (exige digitar `APAGAR`). Botão **Simular** mostra o que aconteceria sem tocar em nada (não vai para o histórico).
-- **Quarentena**: `%APPDATA%\DSS\quarentena\<id>.quarentena` (a extensão impede abrir por engano) + `indice.json`. **Histórico**: `%APPDATA%\DSS\historico.json` (últimas 300 limpezas).
+- **Quarentena**: `%APPDATA%\MySyS\quarentena\<id>.quarentena` (a extensão impede abrir por engano) + `indice.json`. **Histórico**: `%APPDATA%\MySyS\historico.json` (últimas 300 limpezas).
 - Pastas de lixo (Temp, caches) são **esvaziadas**, nunca removidas; `node_modules` sai inteira; em Antigos, uma pasta marcada remove só os arquivos antigos direto nela.
 - Arquivos em uso ou sem permissão são pulados e contados (status "parcial").
 - A Lixeira do Windows só libera espaço quando é esvaziada (a tela avisa).
@@ -272,7 +272,9 @@ Próximo passo: as **Melhorias futuras** (fim desta seção), começando pela le
 - **Lição aprendida**: na primeira versão dos testes, esvaziar `C:\` não foi barrado (nada foi apagado: o teste estourou o tempo ainda medindo `C:\Dev`). Daí vieram o `canEmptyFolder()` e a trava `beforeDestroy` nos testes, que transforma qualquer tentativa de remover algo fora da pasta de teste em erro. **Todo teste que remove arquivos deve usar essa trava.**
 
 ### Decisões tomadas (além da especificação)
-- **Nome**: o app se chama **DSS** (pacote `dss`). Os dados dele ficam em `%APPDATA%\DSS`.
+- **Nome**: o app se chama **MySyS** (pacote `mysys`). Os dados dele ficam em `%APPDATA%\MySyS`.
+  - Até a v0.1.0 se chamava **DSS** (dados em `%APPDATA%\DSS`). Ao abrir, `migrate-data.ts` move configurações, histórico, cache e quarentena para a pasta nova, sem sobrescrever nada; a restauração da quarentena procura o arquivo na pasta atual, não no caminho gravado.
+  - O `appId` continua `com.mateusmendes.dss` de propósito: é o que faz o instalador novo reconhecer e atualizar a instalação antiga. Não aparece para o usuário.
 - **Pasta**: o projeto fica direto em `C:\Dev\DSS` (não numa subpasta `zelador-ssd/`).
 - **Build**: Vite + `vite-plugin-electron`. O `package.json` é `"type": "commonjs"` (o preload precisa ser CommonJS por causa do `sandbox: true`).
 - **`ELECTRON_RUN_AS_NODE`**: alguns terminais (inclusive o do VS Code) definem essa variável, que impede a janela de abrir. O `vite.config.mts` a remove.
@@ -290,22 +292,22 @@ Próximo passo: as **Melhorias futuras** (fim desta seção), começando pela le
 - **Defender**: roda com `-DisableRemediation` (só verifica, não remove nada sozinho). Funciona sem administrador.
 
 ### Como as configurações e o cache funcionam (Fase 8)
-- **Configurações** em `%APPDATA%\DSS\configuracoes.json`. Tudo passa por `sanitizeSettings()`: arquivo corrompido ou valor absurdo volta ao padrão ou ao limite (dias 30–3650; duplicados 0,1 MB–10 GB; até 100 pastas ignoradas, só caminhos absolutos).
+- **Configurações** em `%APPDATA%\MySyS\configuracoes.json`. Tudo passa por `sanitizeSettings()`: arquivo corrompido ou valor absurdo volta ao padrão ou ao limite (dias 30–3650; duplicados 0,1 MB–10 GB; até 100 pastas ignoradas, só caminhos absolutos).
 - O tema tem uma cópia no `localStorage` só para o app abrir sem "piscar" no tema errado; quem manda são as configurações.
-- **Cache** em `%APPDATA%\DSS\ultima-analise.json.gz`: a árvore é guardada "achatada" (listas paralelas em pré-ordem) e comprimida com gzip. Gravado pela worker da análise depois de entregar o resultado; lido por outra worker ao abrir o app. Medido com ~177 mil pastas: 1,3 MB, 173 ms para gravar e 65 ms para ler.
+- **Cache** em `%APPDATA%\MySyS\ultima-analise.json.gz`: a árvore é guardada "achatada" (listas paralelas em pré-ordem) e comprimida com gzip. Gravado pela worker da análise depois de entregar o resultado; lido por outra worker ao abrir o app. Medido com ~177 mil pastas: 1,3 MB, 173 ms para gravar e 65 ms para ler.
 - Análise **cancelada não substitui** o cache. Cache de outra versão (`CACHE_VERSION`) ou estragado é ignorado.
 - **Resultado do cache é só para ver.** O main recusa limpar (inclusive simular) e a tela de limpeza oferece "Analisar de novo": os arquivos podem ter mudado desde a análise salva. Duplicados e suspeitos podem ser buscados a partir dele (só leem arquivos).
 
 ### Como o instalador funciona (Fase 9)
 - **electron-builder** com NSIS em assistente (escolher pasta, atalhos na Área de Trabalho e no Menu Iniciar). Configuração no campo `"build"` do `package.json`.
-- **Instala só para o usuário atual** (`%LOCALAPPDATA%\Programs\DSS`), sem pedir administrador (`allowElevation: false`), e o app roda como `asInvoker`: regra 6.
-- **Desinstalar mantém `%APPDATA%\DSS`** (quarentena, histórico, configurações, cache), para não apagar nada por engano.
+- **Instala só para o usuário atual** (`%LOCALAPPDATA%\Programs\MySyS`), sem pedir administrador (`allowElevation: false`), e o app roda como `asInvoker`: regra 6.
+- **Desinstalar mantém `%APPDATA%\MySyS`** (quarentena, histórico, configurações, cache), para não apagar nada por engano.
 - Todo o código do app (React, recharts, xxhash…) vai **embutido** nos arquivos gerados pelo Vite. Por isso todas as dependências estão em `devDependencies`: o pacote `app.asar` fica com ~750 KB, sem `node_modules`. Se um dia uma dependência precisar existir em tempo de execução (ex.: módulo nativo), ela volta para `dependencies`.
 - As 3 workers rodam de dentro do `app.asar` sem ajustes (testado: análise, duplicados com xxhash/SHA-256 e cache).
 - `"electronDist": "node_modules/electron/dist"`: usa o Electron já instalado. Sem isso, o electron-builder extrai o Electron e falha ao renomear a pasta (`EPERM`; algo do Windows, provavelmente o antivírus, segura os arquivos).
 - O `.exe` **não tem assinatura digital**: na primeira execução o SmartScreen mostra "O Windows protegeu o computador" → "Mais informações" → "Executar assim mesmo".
-- Testado: instalação silenciosa (`/S`), atalhos, registro em "Aplicativos instalados", desinstalação silenciosa e `%APPDATA%\DSS` preservada.
-- **Fusíveis do Electron** (`electronFuses`): o `DSS.exe` instalado não pode ser usado como Node.js genérico (`ELECTRON_RUN_AS_NODE`, `NODE_OPTIONS` e `--inspect` desligados), só carrega o app de dentro do `app.asar` e confere a integridade dele. Efeito colateral bom: abre normalmente mesmo de um terminal com `ELECTRON_RUN_AS_NODE=1`. `GrantFileProtocolExtraPrivileges` fica ligado porque a interface é carregada de `file://`.
+- Testado: instalação silenciosa (`/S`), atalhos, registro em "Aplicativos instalados", desinstalação silenciosa e `%APPDATA%\MySyS` preservada.
+- **Fusíveis do Electron** (`electronFuses`): o `MySyS.exe` instalado não pode ser usado como Node.js genérico (`ELECTRON_RUN_AS_NODE`, `NODE_OPTIONS` e `--inspect` desligados), só carrega o app de dentro do `app.asar` e confere a integridade dele. Efeito colateral bom: abre normalmente mesmo de um terminal com `ELECTRON_RUN_AS_NODE=1`. `GrantFileProtocolExtraPrivileges` fica ligado porque a interface é carregada de `file://`.
 
 ### Repositório público (preparação de 02/10/2026)
 - Revisado para não vazar nada: sem segredos, sem chamadas de rede no app, sem caminhos pessoais. `CLAUDE.md`, `.claude/` e `graphify-out/` (ferramentas locais, com caminhos desta máquina) ficam fora do git **sem aparecer no `.gitignore` público**: são ignorados por `C:\Dev\DSS.gitignore-local`, ligado só neste repositório com `git config core.excludesFile C:/Dev/DSS.gitignore-local` (fica em `.git/config`). Num clone novo, essa configuração precisa ser refeita.

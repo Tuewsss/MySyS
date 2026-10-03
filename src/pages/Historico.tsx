@@ -47,7 +47,7 @@ export default function Historico() {
 
   return (
     <>
-      <PageHeader title="Histórico" subtitle="Limpezas feitas pelo DSS, com opção de desfazer o que foi para a quarentena." />
+      <PageHeader title="Histórico" subtitle="Limpezas feitas pelo MySyS, com opção de desfazer o que foi para a quarentena." />
 
       {message && (
         <div className="mb-4 rounded-lg border border-sky-500/40 bg-sky-500/10 px-4 py-2 text-sm">{message}</div>
@@ -55,7 +55,7 @@ export default function Historico() {
 
       <Card
         title={`Quarentena (${formatNumber(quarantine.length)})`}
-        subtitle="Arquivos isolados pelo DSS. Eles não podem ser abertos por engano e podem voltar para o lugar original."
+        subtitle="Arquivos isolados pelo MySyS. Eles não podem ser abertos por engano e podem voltar para o lugar original."
       >
         {quarantine.length === 0 ? (
           <p className="text-sm text-slate-500">A quarentena está vazia.</p>

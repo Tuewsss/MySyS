@@ -14,7 +14,7 @@ import type {
   QuarantineEntry,
 } from './types'
 
-// Limpeza: o único lugar do DSS que remove arquivos.
+// Limpeza: o único lugar do MySyS que remove arquivos.
 //
 // Regras de segurança (seção 5 do projeto):
 //  - TODO caminho passa por isProtected() aqui, logo antes de agir;
@@ -26,7 +26,7 @@ import type {
 export interface CleanerDeps {
   /** Manda para a Lixeira do Windows (no app: shell.trashItem do Electron). */
   trash: (p: string) => Promise<void>
-  /** Pasta de dados do DSS (%APPDATA%\DSS): quarentena e histórico. */
+  /** Pasta de dados do MySyS (%APPDATA%\MySyS): quarentena e histórico. */
   dataDir: string
   /**
    * Chamado antes de QUALQUER operação que remove ou move algo. Se lançar
@@ -131,7 +131,7 @@ export class Cleaner {
     // "contents" mexe só no que está DENTRO da pasta (ex.: C:\Windows\Temp),
     // com regra própria e mais rígida.
     const blocked = t.kind === 'contents' ? !canEmptyFolder(t.path) : isProtected(t.path)
-    if (blocked) return skip('Caminho protegido: o DSS nunca remove')
+    if (blocked) return skip('Caminho protegido: o MySyS nunca remove')
     if (req.action === 'quarentena' && t.kind !== 'file') return skip('A quarentena é só para arquivos')
 
     const st = await lstatOrNull(t.path)
@@ -272,10 +272,13 @@ export class Cleaner {
     if (await lstatOrNull(entry.originalPath)) {
       return { ok: false, message: `Já existe um arquivo em ${entry.originalPath}.` }
     }
+    // O arquivo é procurado na pasta de quarentena ATUAL: o storedPath gravado
+    // pode apontar para a pasta antiga (%APPDATA%\DSS, antes de virar MySyS).
+    const storedPath = path.join(this.quarantineDir, path.basename(entry.storedPath))
     try {
-      this.deps.beforeDestroy?.(entry.storedPath)
+      this.deps.beforeDestroy?.(storedPath)
       await fs.mkdir(path.dirname(entry.originalPath), { recursive: true })
-      await moveFile(entry.storedPath, entry.originalPath)
+      await moveFile(storedPath, entry.originalPath)
     } catch (err) {
       return { ok: false, message: describeError(err) }
     }

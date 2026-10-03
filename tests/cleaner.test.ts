@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
 import { Cleaner, canEmptyFolder } from '../electron/scanner/cleaner'
+import { migrateDataDir } from '../electron/migrate-data'
 import type { CleanRequest, CleanTarget } from '../electron/scanner/types'
 
 const DAY = 24 * 60 * 60 * 1000
@@ -88,7 +89,7 @@ describe('segurança', () => {
   })
 
   it('a trava dos testes funciona (prova de que um bug não apagaria arquivos reais)', async () => {
-    const r = await cleaner.run(req('apagar', [{ path: 'C:\\Dev\\nao-existe-dss-teste.txt', kind: 'file' }]))
+    const r = await cleaner.run(req('apagar', [{ path: 'C:\\Dev\\nao-existe-mysys-teste.txt', kind: 'file' }]))
     expect(r.items[0].status).toBe('pulado') // não existe, nem chega a tentar
     expect(() => (cleaner as unknown as { guard: (p: string) => void }).guard('C:\\Dev\\x.txt')).toThrow(/FORA DA PASTA/)
   })
@@ -221,5 +222,38 @@ describe('quarentena, histórico e desfazer', () => {
     const r = await cleaner.restore(entry.id)
     expect(r.ok).toBe(false)
     expect(await cleaner.listQuarantine()).toHaveLength(1)
+  })
+
+  it('restaura depois de migrar os dados do DSS para a pasta do MySyS', async () => {
+    const sus = file('Downloads\\antigo.exe', 7)
+    const r = await cleaner.run(req('quarentena', [{ path: sus, kind: 'file' }]))
+
+    const novaPasta = path.join(tmp, 'dados-mysys')
+    expect(migrateDataDir(path.join(tmp, 'dados'), novaPasta)).toEqual(['historico.json', 'quarentena'])
+    const novo = new Cleaner({ dataDir: novaPasta, beforeDestroy: () => {}, trash: async () => {} })
+
+    expect(await novo.undo(r.id)).toEqual({ restored: 1, failed: [] })
+    expect(fs.statSync(sus).size).toBe(7)
+  })
+})
+
+describe('migração da pasta de dados', () => {
+  it('não sobrescreve o que já existe na pasta nova', () => {
+    const velha = path.join(tmp, 'DSS')
+    const nova = path.join(tmp, 'MySyS')
+    fs.mkdirSync(velha)
+    fs.mkdirSync(nova)
+    fs.writeFileSync(path.join(velha, 'configuracoes.json'), 'velha')
+    fs.writeFileSync(path.join(nova, 'configuracoes.json'), 'nova')
+    fs.writeFileSync(path.join(velha, 'historico.json'), '[]')
+
+    expect(migrateDataDir(velha, nova)).toEqual(['historico.json'])
+    expect(fs.readFileSync(path.join(nova, 'configuracoes.json'), 'utf8')).toBe('nova')
+    expect(exists(path.join(velha, 'configuracoes.json'))).toBe(true)
+  })
+
+  it('não faz nada sem a pasta antiga', () => {
+    expect(migrateDataDir(path.join(tmp, 'nao-existe'), path.join(tmp, 'MySyS'))).toEqual([])
+    expect(exists(path.join(tmp, 'MySyS'))).toBe(false)
   })
 })

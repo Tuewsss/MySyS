@@ -2,7 +2,8 @@ import { app, BrowserWindow, session } from 'electron'
 import path from 'node:path'
 import { registerIpc } from './ipc'
 import { loadSettings } from './settings'
-import { settingsFile } from './paths'
+import { dataDir, legacyDataDir, settingsFile } from './paths'
+import { migrateDataDir } from './migrate-data'
 
 // Em modo dev o Vite serve a interface nesta URL; no app instalado
 // carregamos o index.html gerado em dist/.
@@ -21,7 +22,7 @@ async function createWindow() {
     minWidth: 900,
     minHeight: 600,
     backgroundColor: BACKGROUND[theme],
-    title: 'DSS',
+    title: 'MySyS',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       // Segurança: o React NÃO tem acesso ao Node. Ele só enxerga
@@ -50,8 +51,9 @@ async function createWindow() {
 }
 
 app.whenReady().then(() => {
-  // O DSS não usa câmera, microfone, localização, notificações etc.: nega tudo.
+  // O MySyS não usa câmera, microfone, localização, notificações etc.: nega tudo.
   session.defaultSession.setPermissionRequestHandler((_wc, _permission, callback) => callback(false))
+  migrateDataDir(legacyDataDir(), dataDir())
   return createWindow()
 })
 

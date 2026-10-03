@@ -15,7 +15,7 @@ let tmp: string
 let root: string
 
 beforeAll(() => {
-  tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'dss-walker-'))
+  tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'mysys-walker-'))
   root = path.join(tmp, 'raiz')
   const outside = path.join(tmp, 'fora')
 

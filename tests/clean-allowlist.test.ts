@@ -46,7 +46,7 @@ describe('allowlist', () => {
     expect(ask([{ path: 'C:\\Users\\a\\AppData\\Local\\Temp', kind: 'folder' }]).ok).toBe(false)
   })
 
-  it('Windows.old nunca pode ser limpo pelo DSS', () => {
+  it('Windows.old nunca pode ser limpo pelo MySyS', () => {
     expect(ask([{ path: 'C:\\Windows.old', kind: 'contents' }]).ok).toBe(false)
   })
 

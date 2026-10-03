@@ -1,4 +1,4 @@
-# Gera o ícone do DSS: build/icon.png (1024 px) e build/icon.ico (16 a 256 px).
+# Gera o ícone do MySyS: build/icon.png (1024 px) e build/icon.ico (16 a 256 px).
 # Uso: python scripts/gerar-icone.py   (precisa do Pillow: pip install pillow)
 #
 # Desenho: um SSD (placa azul com chips) e uma "faísca" de limpeza, sobre um
@@ -57,4 +57,14 @@ out.mkdir(exist_ok=True)
 img.save(out / 'icon.png')
 # O .ico guarda várias resoluções; o Windows escolhe a melhor para cada lugar.
 img.save(out / 'icon.ico', sizes=[(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)])
+
+# Logos do pacote da Microsoft Store (o electron-builder lê de build/appx).
+appx = out / 'appx'
+appx.mkdir(exist_ok=True)
+for name, size in [('StoreLogo', 50), ('Square44x44Logo', 44), ('Square150x150Logo', 150)]:
+    img.resize((size, size), Image.LANCZOS).save(appx / f'{name}.png')
+wide = Image.new('RGBA', (310, 150), (0, 0, 0, 0))
+wide.paste(img.resize((150, 150), Image.LANCZOS), (80, 0))
+wide.save(appx / 'Wide310x150Logo.png')
+
 print('Ícone gerado em', out)

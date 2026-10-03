@@ -8,7 +8,7 @@ import type { FileFacts } from './scanner/suspicious'
 // atributo "oculto", registro). Usamos o PowerShell, SOMENTE LEITURA.
 
 /**
- * Ambiente para o powershell.exe (5.1). Se o DSS foi aberto a partir do
+ * Ambiente para o powershell.exe (5.1). Se o MySyS foi aberto a partir do
  * PowerShell 7, o PSModulePath herdado aponta para os módulos dele, que o 5.1
  * não consegue carregar (Get-AuthenticodeSignature some). Sem a variável, o
  * 5.1 monta o caminho padrão sozinho.
@@ -62,7 +62,7 @@ export async function inspectFiles(
   shouldStop?: () => boolean,
 ): Promise<Map<string, FileFacts>> {
   const facts = new Map<string, FileFacts>()
-  const tmpFile = path.join(os.tmpdir(), `dss-inspect-${process.pid}-${Date.now()}.json`)
+  const tmpFile = path.join(os.tmpdir(), `mysys-inspect-${process.pid}-${Date.now()}.json`)
 
   try {
     for (let i = 0; i < paths.length; i += INSPECT_BATCH) {

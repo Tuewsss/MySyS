@@ -68,7 +68,7 @@ export function registerIpc(win: BrowserWindow) {
     if (!win.isDestroyed()) win.webContents.send(channel, data)
   }
 
-  // Pasta de dados do DSS: %APPDATA%\DSS (configurações, cache, quarentena e histórico).
+  // Pasta de dados do MySyS: %APPDATA%\MySyS (configurações, cache, quarentena e histórico).
   const dataDir = paths.dataDir()
   const settingsFile = paths.settingsFile()
   const cacheFile = paths.cacheFile()

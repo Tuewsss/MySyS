@@ -117,7 +117,7 @@ export default function Antigos() {
           <Gamepad2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
           <div className="flex-1">
             <strong>{formatBytes(savesSize)}</strong> dos arquivos antigos parecem ser <strong>saves de jogos</strong>.
-            Eles guardam seu progresso e ocupam pouco espaço: o DSS nunca vai marcá-los para limpeza automaticamente.
+            Eles guardam seu progresso e ocupam pouco espaço: o MySyS nunca vai marcá-los para limpeza automaticamente.
             {old.games.gravacao.size > 0 && (
               <> Já as gravações e replays de jogos ({formatBytes(old.games.gravacao.size)}) não guardam progresso.</>
             )}
