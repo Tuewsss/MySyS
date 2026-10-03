@@ -1,5 +1,6 @@
 import { execFile } from 'node:child_process'
 import type { Drive } from './scanner/types'
+import { powershellEnv } from './winfiles'
 
 // Pedimos ao Windows a lista de unidades via PowerShell (CIM).
 // Só leitura: este comando não altera nada no sistema.
@@ -23,7 +24,7 @@ export function listDrives(): Promise<Drive[]> {
     execFile(
       'powershell.exe',
       ['-NoProfile', '-NonInteractive', '-Command', PS_COMMAND],
-      { windowsHide: true, timeout: 15000 },
+      { windowsHide: true, timeout: 15000, env: powershellEnv() },
       (err, stdout) => {
         if (err) return reject(err)
         try {

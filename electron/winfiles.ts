@@ -8,6 +8,18 @@ import type { FileFacts } from './scanner/suspicious'
 // atributo "oculto", registro). Usamos o PowerShell, SOMENTE LEITURA.
 
 /**
+ * Ambiente para o powershell.exe (5.1). Se o DSS foi aberto a partir do
+ * PowerShell 7, o PSModulePath herdado aponta para os módulos dele, que o 5.1
+ * não consegue carregar (Get-AuthenticodeSignature some). Sem a variável, o
+ * 5.1 monta o caminho padrão sozinho.
+ */
+export function powershellEnv(): NodeJS.ProcessEnv {
+  const env = { ...process.env }
+  for (const k of Object.keys(env)) if (k.toLowerCase() === 'psmodulepath') delete env[k]
+  return env
+}
+
+/**
  * Roda um script do PowerShell e devolve o JSON que ele imprimir.
  * O script vai codificado (-EncodedCommand) para não depender de arquivos
  * .ps1 nem da política de execução de scripts do Windows.
@@ -20,7 +32,7 @@ function runPowerShellJson<T>(script: string, timeoutMs = 120_000): Promise<T> {
     execFile(
       'powershell.exe',
       ['-NoProfile', '-NonInteractive', '-EncodedCommand', encoded],
-      { windowsHide: true, timeout: timeoutMs, maxBuffer: 64 * 1024 * 1024, encoding: 'utf8' },
+      { windowsHide: true, timeout: timeoutMs, maxBuffer: 64 * 1024 * 1024, encoding: 'utf8', env: powershellEnv() },
       (err, stdout) => {
         if (err) return reject(err)
         const text = stdout.trim()
