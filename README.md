@@ -1,5 +1,9 @@
 # MySyS
 
+[![Licença: PolyForm Noncommercial 1.0.0](https://img.shields.io/badge/licen%C3%A7a-PolyForm%20Noncommercial%201.0.0-blue)](LICENSE.md)
+[![Release](https://img.shields.io/github/v/release/Tuewsss/MySyS?label=vers%C3%A3o)](https://github.com/Tuewsss/MySyS/releases/latest)
+[![CI](https://github.com/Tuewsss/MySyS/actions/workflows/ci.yml/badge.svg)](https://github.com/Tuewsss/MySyS/actions/workflows/ci.yml)
+
 Aplicativo para **Windows** que mostra o que está ocupando espaço no disco e ajuda a limpar **com segurança**: nada é apagado sem a sua confirmação.
 
 ## O que ele faz
@@ -75,6 +79,13 @@ projeto.md           especificação completa, decisões e progresso
 
 ## Licença
 
-[PolyForm Noncommercial 1.0.0](LICENSE): você pode usar, estudar, modificar e compartilhar o MySyS livremente para **fins não comerciais** (uso pessoal, estudo, hobby, escolas, ONGs). **Não é permitido** vendê-lo nem usá-lo para ganhar dinheiro. Para uso comercial, fale com o autor.
+O MySyS usa a [PolyForm Noncommercial 1.0.0](LICENSE.md): é livre para **fins não comerciais**, como uso pessoal, estudo, hobby, escolas e ONGs.
 
-Ao compartilhar, mantenha o arquivo [LICENSE](LICENSE), incluindo a linha `Required Notice`.
+| ✅ Pode | ❌ Não pode | 📋 Condições |
+| --- | --- | --- |
+| Usar | Vender | Manter o arquivo [LICENSE.md](LICENSE.md) |
+| Estudar o código | Usar para ganhar dinheiro | Manter a linha `Required Notice` |
+| Modificar | Usar em empresa com fins lucrativos | |
+| Compartilhar | | |
+
+Para uso comercial, fale com o autor.

@@ -83,7 +83,7 @@ DSS/
 ├── scripts/gerar-icone.py # desenha o ícone (Python + Pillow): `npm run icon`
 ├── release/               # instalador gerado por `npm run dist` (ignorado pelo git)
 ├── README.md              # apresentação do repositório (público)
-├── LICENSE                # PolyForm Noncommercial 1.0.0 (proíbe uso comercial)
+├── LICENSE.md             # PolyForm Noncommercial 1.0.0 (proíbe uso comercial)
 ├── vite.config.mts        # compila main, preload, workers e React
 ├── vitest.config.mts      # config separada para os testes não abrirem o Electron
 └── package.json
