@@ -37,6 +37,11 @@ jobs:
       - run: npm run typecheck
       - run: npm test
 
+      # O Electron só baixa o binário no primeiro uso; o electron-builder
+      # precisa dele em node_modules/electron/dist (electronDist).
+      - name: Baixar binário do Electron
+        run: node node_modules/electron/install.js
+
       - name: Gerar instalador
         run: npm run dist -- --publish never
 
