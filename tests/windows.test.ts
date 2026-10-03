@@ -24,14 +24,15 @@ afterAll(() => {
 
 describe.runIf(onWindows)('PowerShell (Windows)', () => {
   it('informa assinatura, arquivo oculto e inexistente (com acentos no caminho)', async () => {
-    const notepad = 'C:\\Windows\\System32\\notepad.exe'
+    // cmd.exe existe em qualquer Windows (o notepad.exe falta no Windows Server do CI)
+    const cmd = 'C:\\Windows\\System32\\cmd.exe'
     const naoAssinado = path.join(tmp, 'não-assinado ção.exe')
     const oculto = path.join(tmp, 'oculto.exe')
     const sumiu = path.join(tmp, 'sumiu.exe')
-    const facts = await inspectFiles([notepad, naoAssinado, oculto, sumiu])
+    const facts = await inspectFiles([cmd, naoAssinado, oculto, sumiu])
 
-    expect(facts.get(notepad.toLowerCase())?.signature).toBe('Valid')
-    expect(facts.get(notepad.toLowerCase())?.signer).toMatch(/Microsoft/)
+    expect(facts.get(cmd.toLowerCase())?.signature).toBe('Valid')
+    expect(facts.get(cmd.toLowerCase())?.signer).toMatch(/Microsoft/)
     expect(facts.get(naoAssinado.toLowerCase())?.exists).toBe(true)
     expect(facts.get(naoAssinado.toLowerCase())?.signature).not.toBe('Valid')
     expect(facts.get(oculto.toLowerCase())?.hidden).toBe(true)
