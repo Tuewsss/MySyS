@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Analisa o SSD e ajuda a limpar com segurança",
   "author": "Mateus Monteiro Mendes",
-  "license": "MIT",
+  "license": "PolyForm-Noncommercial-1.0.0",
   "main": "dist-electron/main.js",
   "private": true,
   "type": "commonjs",

@@ -57,4 +57,6 @@ projeto.md           especificação completa, decisões e progresso
 
 ## Licença
 
-[MIT](LICENSE)
+[PolyForm Noncommercial 1.0.0](LICENSE): você pode usar, estudar, modificar e compartilhar o DSS livremente para **fins não comerciais** (uso pessoal, estudo, hobby, escolas, ONGs). **Não é permitido** vendê-lo nem usá-lo para ganhar dinheiro. Para uso comercial, fale com o autor.
+
+Ao compartilhar, mantenha o arquivo [LICENSE](LICENSE), incluindo a linha `Required Notice`.

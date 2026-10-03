@@ -83,7 +83,7 @@ DSS/
 ├── scripts/gerar-icone.py # desenha o ícone (Python + Pillow): `npm run icon`
 ├── release/               # instalador gerado por `npm run dist` (ignorado pelo git)
 ├── README.md              # apresentação do repositório (público)
-├── LICENSE                # MIT
+├── LICENSE                # PolyForm Noncommercial 1.0.0 (proíbe uso comercial)
 ├── vite.config.mts        # compila main, preload, workers e React
 ├── vitest.config.mts      # config separada para os testes não abrirem o Electron
 └── package.json
@@ -310,7 +310,8 @@ Próximo passo: as **Melhorias futuras** (fim desta seção), começando pela le
 ### Repositório público (preparação de 02/10/2026)
 - Revisado para não vazar nada: sem segredos, sem chamadas de rede no app, sem caminhos pessoais. `CLAUDE.md`, `.claude/` e `graphify-out/` (ferramentas locais, com caminhos desta máquina) ficam fora do git **sem aparecer no `.gitignore` público**: são ignorados por `C:\Dev\DSS.gitignore-local`, ligado só neste repositório com `git config core.excludesFile C:/Dev/DSS.gitignore-local` (fica em `.git/config`). Num clone novo, essa configuração precisa ser refeita.
 - Segurança extra na janela (`main.ts`): bloqueia navegação para fora do app e janelas novas; nega pedidos de permissão (câmera, microfone etc.). A cor de fundo inicial segue o tema salvo.
-- Licença MIT e `README.md` para quem chega ao repositório.
+- `README.md` para quem chega ao repositório.
+- **Licença: PolyForm Noncommercial 1.0.0** (decisão do usuário): uso, estudo e modificação livres, mas **proibido vender ou usar comercialmente**. Os primeiros commits publicados (até `f403249`) saíram com MIT; a troca vale a partir do commit que muda a licença.
 
 ### Melhorias futuras (depois do protótipo)
 - **Leitura rápida pela MFT** (como o WizTree): ler a tabela de arquivos do NTFS direto do disco (`\\.\C:`) em vez de pasta por pasta (hoje ~72 s no `C:`; a meta é poucos segundos).
