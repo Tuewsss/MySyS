@@ -88,4 +88,4 @@ O MySyS usa a [PolyForm Noncommercial 1.0.0](LICENSE.md): é livre para **fins n
 | Modificar | Usar em empresa com fins lucrativos | |
 | Compartilhar | | |
 
-Para uso comercial, fale com o autor.
+Para uso comercial, fale com eu.
