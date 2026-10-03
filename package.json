@@ -1,0 +1,80 @@
+{
+  "name": "dss",
+  "productName": "DSS",
+  "version": "0.1.0",
+  "description": "Analisa o SSD e ajuda a limpar com segurança",
+  "author": "Mateus Monteiro Mendes",
+  "license": "MIT",
+  "main": "dist-electron/main.js",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "clean": "node -e \"for (const d of ['dist', 'dist-electron']) require('fs').rmSync(d, { recursive: true, force: true })\"",
+    "dist": "npm run clean && npm run build && electron-builder --win nsis",
+    "icon": "python scripts/gerar-icone.py"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3",
+    "lucide-react": "^1.49.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4",
+    "recharts": "^3.10.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "vite-plugin-electron": "^1.1.2",
+    "vitest": "^5.0.3",
+    "xxhash-wasm": "^1.1.0"
+  },
+  "build": {
+    "appId": "com.mateusmendes.dss",
+    "electronDist": "node_modules/electron/dist",
+    "productName": "DSS",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "electronFuses": {
+      "runAsNode": false,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableCookieEncryption": true,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico",
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "DSS",
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "artifactName": "DSS-Setup-${version}.${ext}"
+    }
+  }
+}

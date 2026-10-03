@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+/* Tema escuro controlado pela classe "dark" no <html> (padrão do app).
+   A tela de Configurações troca essa classe (ver src/lib/theme.ts). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Cores das categorias de arquivo. Cada tema tem tons próprios, escolhidos
+   para continuarem distinguíveis por quem tem daltonismo.
+   (Paleta validada: ver comentário em src/lib/categories.ts) */
+:root {
+  --cat-0: #2a78d6; /* vídeo */
+  --cat-1: #eb6834; /* imagem */
+  --cat-2: #1baf7a; /* jogos */
+  --cat-3: #eda100; /* instaladores */
+  --cat-4: #e87ba4; /* compactados */
+  --cat-5: #a3a9b4; /* outros (neutro) */
+  --chart-surface: #ffffff;
+  --chart-ink: #0b0f17;
+}
+.dark {
+  --cat-0: #3987e5;
+  --cat-1: #d95926;
+  --cat-2: #199e70;
+  --cat-3: #c98500;
+  --cat-4: #d55181;
+  --cat-5: #8a919d;
+  --chart-surface: #0f1520;
+  --chart-ink: #0b0f17;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased dark:bg-[#0b0f17] dark:text-slate-100;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  user-select: none; /* parece app nativo, não página web */
+}

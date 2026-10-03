@@ -1,0 +1,10 @@
+node_modules/
+dist/
+dist-electron/
+release/
+*.log
+tests/tmp-*
+
+# Variáveis de ambiente e segredos, caso algum dia existam
+.env
+.env.*
